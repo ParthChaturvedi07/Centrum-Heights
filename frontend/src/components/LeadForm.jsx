@@ -12,6 +12,7 @@ import {
   Download,
   MessageCircle,
 } from "lucide-react";
+import api from "../utils/api";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,26 +62,22 @@ export default function LeadForm() {
 
     setLoading(true);
     try {
-      // Simulated API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // await api.post("/leads", formData);
+      // Real API call to backend. `api` has baseURL set to /api (see src/utils/api.js)
+      const res = await api.post("/leads", formData);
+      console.log("Lead submitted, response:", res.data);
 
       // Show success toast
       setShowToast(true);
 
       // Reset form
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        message: "",
-      });
+      setFormData({ name: "", phone: "", email: "", message: "" });
 
       // Hide toast after 5 seconds
       setTimeout(() => setShowToast(false), 5000);
     } catch (err) {
-      console.error("Lead submission error:", err);
-      alert("Submission failed. Please try again later.");
+      console.error("Lead submission error:", err?.response || err.message || err);
+      const msg = err?.response?.data?.message || "Submission failed. Please try again later.";
+      alert(msg);
     } finally {
       setLoading(false);
     }
