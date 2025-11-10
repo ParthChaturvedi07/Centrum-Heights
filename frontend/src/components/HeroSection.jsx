@@ -129,11 +129,11 @@ export default function HeroSection() {
             <div ref={headingRef}>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-center md:text-left mt-12 sm:mt-0">
                 <div className="overflow-hidden mb-1">
-                  <span className="block text-white">OPENING MORE</span>
+                  <span className="block text-white">CENTRUM HEIGHTS</span>
                 </div>
                 <div className="overflow-hidden">
                   <span className="block bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-                    DOORS
+                    OPEANING MORE DOORS
                   </span>
                 </div>
               </h1>

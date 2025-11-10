@@ -21,7 +21,7 @@ export default function Gallery() {
     {
       src: gallery1,
       alt: "Building architecture view 1",
-      span: "md:col-span-2 md:row-span-2",
+      span: "md:col-span-1 md:row-span-2",
     },
     {
       src: gallery2,
@@ -36,7 +36,7 @@ export default function Gallery() {
     {
       src: gallery4,
       alt: "Building architecture view 4",
-      span: "md:col-span-1 md:row-span-1",
+      span: "md:col-span-1 md:row-span-2",
     },
     {
       src: gallery5,
@@ -45,15 +45,18 @@ export default function Gallery() {
     },
     {
       src: gallery6,
-      alt: "US",
-      span: "md:col-span-2 md:row-span-1",
+      alt: "Cityscape view",
+      span: "md:col-span-1 md:row-span-1",
     },
   ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate grid items
-      gsap.from(gridRef.current?.children, {
+      // Animate grid items with locomotive-scroll compatibility
+      const items = gridRef.current?.children;
+      if (!items) return;
+
+      gsap.from(items, {
         opacity: 0,
         y: 60,
         scale: 0.9,
@@ -63,6 +66,8 @@ export default function Gallery() {
         scrollTrigger: {
           trigger: gridRef.current,
           start: "top 80%",
+          // Disable scrub for locomotive compatibility
+          toggleActions: "play none none reverse",
         },
       });
     }, sectionRef);
@@ -198,10 +203,7 @@ export default function Gallery() {
                 {/* Play Button Overlay (for thumbnail) */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-slate-900/80 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-full flex items-center justify-center">
-                    <Play
-                      className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1"
-                      fill="white"
-                    />
+                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="white" />
                   </div>
                 </div>
               </div>
@@ -238,8 +240,7 @@ export default function Gallery() {
               Want to See More?
             </h3>
             <p className="text-base sm:text-lg text-gray-300 mb-6 sm:mb-8">
-              Download our complete brochure with floor plans, amenities, and
-              pricing details
+              Download our complete brochure with floor plans, amenities, and pricing details
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
@@ -252,7 +253,7 @@ export default function Gallery() {
                 Schedule a Visit
               </motion.a>
               <motion.a
-                href={broucher}
+                href="/assets/brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
