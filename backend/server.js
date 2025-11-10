@@ -12,7 +12,11 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: "http://localhost:5173",
+    origin: [
+    "https://centrumheights.com",
+    "https://www.centrumheights.com",
+    "https://centrum-heights.onrender.com" 
+  ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
