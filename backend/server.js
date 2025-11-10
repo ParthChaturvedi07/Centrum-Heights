@@ -14,12 +14,11 @@ app.use(express.json());
 app.use(cors({
   origin: "https://centrum-heights.onrender.com",
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// Required for preflight
-app.options("*", cors());
+// FIXED OPTIONS LINE
+app.options("/*", cors());
 
 // Body parser MUST come after CORS
 app.use(express.json());
