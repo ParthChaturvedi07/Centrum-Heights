@@ -17,9 +17,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// FIXED OPTIONS LINE
-app.options("/*", cors());
-
 // Body parser MUST come after CORS
 app.use(express.json());
 
