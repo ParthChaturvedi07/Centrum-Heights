@@ -63,7 +63,7 @@ export default function LeadForm() {
     setLoading(true);
     try {
       // Real API call to backend. `api` has baseURL set to /api (see src/utils/api.js)
-      const res = await api.post("/leads", formData);
+      const res = await api.post("/api/leads", formData);
       console.log("Lead submitted, response:", res.data);
 
       // Show success toast
