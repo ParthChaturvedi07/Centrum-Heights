@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Check, Sparkles, TrendingUp } from "lucide-react";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../utils/AuthProvider";
 
 export default function PricingPlan() {
   const { isAuthenticated } = useAuth();
