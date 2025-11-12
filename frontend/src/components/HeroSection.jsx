@@ -3,8 +3,10 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Home, TrendingUp, Train, DollarSign } from "lucide-react";
-import Bg_Video from "../assets/videos/centrum location drone.mp4"
+import Bg_Video from "../assets/videos/centrum location drone.mp4";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../utils/AuthProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +18,20 @@ export default function HeroSection() {
   const ctaRef = useRef(null);
   const badgeRef = useRef(null);
   const videoRef = useRef(null);
+
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleDownload = () => {
+    if (!isAuthenticated) {
+      // redirect to login, preserve return location so user can be sent back
+      navigate("/login", { state: { from: location } });
+      return;
+    }
+    // user is authenticated — serve brochure (place brochure.pdf in public/)
+    window.open(broucher, "_blank");
+  };
 
   const { scrollYProgress } = useScroll();
   const videoScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
@@ -84,10 +100,10 @@ export default function HeroSection() {
   }, []);
 
   const cardData = [
-    { label: "Starting Price", value: "₹60L", icon: DollarSign },
+    { label: "Starting Price", value: "₹62L", icon: DollarSign },
     { label: "Unit Types", value: "2 BHK", icon: Home },
     { label: "Metro Distance", value: "100m", icon: Train },
-    { label: "Rate/sq.ft", value: "₹6,150", icon: TrendingUp },
+    { label: "Rate/sq.ft", value: "₹6,350", icon: TrendingUp },
   ];
 
   return (
@@ -110,10 +126,7 @@ export default function HeroSection() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source
-            src={Bg_Video}
-            type="video/mp4"
-          />
+          <source src={Bg_Video} type="video/mp4" />
         </video>
 
         {/* Overlay */}
@@ -133,7 +146,7 @@ export default function HeroSection() {
                 </div>
                 <div className="overflow-hidden">
                   <span className="block bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-                    OPEANING MORE DOORS
+                    OPENING MORE DOORS
                   </span>
                 </div>
               </h1>
@@ -164,14 +177,14 @@ export default function HeroSection() {
                 Premium 2 BHK Living in Central Noida
               </p>
               <p className="text-xs sm:text-sm text-slate-400">
-                Sector 76 • Metro at 100m • G+5 Low-Rise • Starting ₹60 Lacs
+                Sector 76 • Metro at 100m • G+5 Low-Rise • Starting ₹62 Lacs
               </p>
             </div>
 
             {/* Payment Highlight */}
             <div className="flex justify-center sm:justify-start">
               <div className="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-md border border-yellow-400/30">
-                <span className="px-2 sm:px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 rounded-full text-xs font-bold whitespace-nowrap">
+                <span className="px-8 sm:px-10 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 rounded-full text-xs font-bold whitespace-nowrap">
                   Pay 40% Now
                 </span>
                 <span className="text-xs font-medium text-white">
@@ -187,7 +200,7 @@ export default function HeroSection() {
             >
               <motion.a
                 href="#enquiry"
-                className="group relative inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-semibold overflow-hidden text-sm sm:text-base shadow-lg"
+                className="group relative inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-semibold overflow-hidden text-sm sm:text-base shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -200,11 +213,11 @@ export default function HeroSection() {
                 />
               </motion.a>
 
-              <motion.a
-                href={broucher}
+              <motion.button
+                onClick={handleDownload}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full font-semibold text-sm sm:text-base shadow-lg"
+                className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full font-semibold text-sm sm:text-base shadow-lg"
                 whileHover={{
                   scale: 1.05,
                   backgroundColor: "rgba(255,255,255,0.15)",
@@ -212,7 +225,7 @@ export default function HeroSection() {
                 whileTap={{ scale: 0.95 }}
               >
                 <span>Download Brochure</span>
-              </motion.a>
+              </motion.button>
             </div>
           </div>
 
@@ -245,7 +258,7 @@ export default function HeroSection() {
               <div className="mb-4 sm:mb-6 p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 backdrop-blur-md border border-white/10">
                 <div className="text-xs text-slate-300 mb-1">Starting From</div>
                 <div className="text-2xl sm:text-3xl font-bold text-white mb-3">
-                  ₹60 Lakhs
+                  ₹62 Lakhs
                 </div>
 
                 {/* Mini Chart */}

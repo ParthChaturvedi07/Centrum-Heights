@@ -3,19 +3,35 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Camera, Play, Download } from "lucide-react";
-import gallery1 from "../assets/images/vlcsnap-2025-11-07-13h34m14s505.png"
-import gallery2 from "../assets/images/vlcsnap-2025-11-09-00h00m00s715.png"
-import gallery3 from "../assets/images/vlcsnap-2025-11-09-00h00m05s496.png"
-import gallery4 from "../assets/images/vlcsnap-2025-11-09-00h00m15s068.png"
-import gallery5 from "../assets/images/vlcsnap-2025-11-09-00h00m46s802.png"
-import gallery6 from "../assets/images/WhatsApp Image 2025-11-08 at 13.50.44_7cd76028.jpg"
+import gallery1 from "../assets/images/vlcsnap-2025-11-07-13h34m14s505.png";
+import gallery2 from "../assets/images/vlcsnap-2025-11-09-00h00m00s715.png";
+import gallery3 from "../assets/images/vlcsnap-2025-11-09-00h00m05s496.png";
+import gallery4 from "../assets/images/vlcsnap-2025-11-09-00h00m15s068.png";
+import gallery5 from "../assets/images/vlcsnap-2025-11-09-00h00m46s802.png";
+import gallery6 from "../assets/images/WhatsApp Image 2025-11-08 at 13.50.44_7cd76028.jpg";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
+import { useAuth } from "../utils/AuthProvider";
+import { useLocation, useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Gallery() {
   const sectionRef = useRef(null);
   const gridRef = useRef(null);
+
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleDownload = () => {
+    if (!isAuthenticated) {
+      // redirect to login, preserve return location so user can be sent back
+      navigate("/login", { state: { from: location } });
+      return;
+    }
+    // user is authenticated — serve brochure (place brochure.pdf in public/)
+    window.open(broucher, "_blank");
+  };
 
   const images = [
     {
@@ -203,7 +219,10 @@ export default function Gallery() {
                 {/* Play Button Overlay (for thumbnail) */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-slate-900/80 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-full flex items-center justify-center">
-                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="white" />
+                    <Play
+                      className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1"
+                      fill="white"
+                    />
                   </div>
                 </div>
               </div>
@@ -240,7 +259,8 @@ export default function Gallery() {
               Want to See More?
             </h3>
             <p className="text-base sm:text-lg text-gray-300 mb-6 sm:mb-8">
-              Download our complete brochure with floor plans, amenities, and pricing details
+              Download our complete brochure with floor plans, amenities, and
+              pricing details
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
@@ -252,8 +272,8 @@ export default function Gallery() {
               >
                 Schedule a Visit
               </motion.a>
-              <motion.a
-                href="/assets/brochure.pdf"
+              <motion.button
+                onClick={handleDownload}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
@@ -262,7 +282,7 @@ export default function Gallery() {
               >
                 <Download className="w-4 h-4 sm:w-5 sm:h-5" />
                 Get Brochure
-              </motion.a>
+              </motion.button>
             </div>
           </div>
         </motion.div>

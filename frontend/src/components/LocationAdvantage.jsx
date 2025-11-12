@@ -31,7 +31,7 @@ export default function LocationAdvantage() {
     },
     {
       name: "Sector 76 Metro Station",
-      distance: "0.02 km",
+      distance: "500m",
       icon: Train,
       category: "transport",
     },

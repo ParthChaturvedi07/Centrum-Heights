@@ -14,11 +14,27 @@ import {
 } from "lucide-react";
 import api from "../utils/api";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
+import { useAuth } from "../utils/AuthProvider";
+import { useLocation, useNavigate } from "react-router-dom";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function LeadForm() {
   const sectionRef = useRef(null);
   const formRef = useRef(null);
+
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleDownload = () => {
+    if (!isAuthenticated) {
+      // redirect to login, preserve return location so user can be sent back
+      navigate("/login", { state: { from: location } });
+      return;
+    }
+    // user is authenticated — serve brochure (place brochure.pdf in public/)
+    window.open(broucher, "_blank");
+  };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -75,8 +91,13 @@ export default function LeadForm() {
       // Hide toast after 5 seconds
       setTimeout(() => setShowToast(false), 5000);
     } catch (err) {
-      console.error("Lead submission error:", err?.response || err.message || err);
-      const msg = err?.response?.data?.message || "Submission failed. Please try again later.";
+      console.error(
+        "Lead submission error:",
+        err?.response || err.message || err
+      );
+      const msg =
+        err?.response?.data?.message ||
+        "Submission failed. Please try again later.";
       alert(msg);
     } finally {
       setLoading(false);
@@ -188,13 +209,13 @@ export default function LeadForm() {
             </div>
 
             {/* Download Brochure Card */}
-            <motion.a
-              href={broucher}
+            <motion.button
+              onClick={handleDownload}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="block backdrop-blur-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-2 border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 group"
+              className="w-full block backdrop-blur-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-2 border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 group"
             >
               <div className="flex items-center gap-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -209,7 +230,7 @@ export default function LeadForm() {
                   </p>
                 </div>
               </div>
-            </motion.a>
+            </motion.button>
           </motion.div>
 
           {/* Right - Form */}
@@ -317,7 +338,7 @@ export default function LeadForm() {
 
       {/* WhatsApp Floating Button */}
       <motion.a
-        href="https://wa.me/919999999999"
+        href="https://wa.me/+918587897666"
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0, rotate: -180 }}

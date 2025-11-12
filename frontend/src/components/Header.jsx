@@ -16,7 +16,7 @@ export default function Header() {
   const headerBlur = useTransform(
     scrollY,
     [0, 100],
-    ["blur(0px)", "blur(12px)"]
+    ["blur(10px)", "blur(25px)"]
   );
 
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function Header() {
           >
             {/* WhatsApp Button */}
             <motion.a
-              href="https://wa.me/your-number"
+              href="https://wa.me/+918587897666"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full text-sm font-medium hover:bg-white/15 transition-all group"

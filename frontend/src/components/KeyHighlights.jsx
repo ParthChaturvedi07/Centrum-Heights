@@ -1,266 +1,312 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Building2, Lock, Sparkles, Train, MapPin, DollarSign } from "lucide-react";
 
 export default function KeyHighlights() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
 
   const highlights = [
     {
       text: "G+5 premium low-rise residential project in Central Noida",
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=800&fit=crop",
+      image: "https://is1-2.housingcdn.com/01c16c28/97df0e86a5bd273c59e7ef5bf9fca043/v0/medium/2_bhk_independent_builder_floor-for-sale-sector_76-Noida-building.jpg",
+      Icon: Building2,
     },
     {
       text: "Smart lock system with video door phone and modular kitchen",
       image: "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&h=800&fit=crop",
+      Icon: Lock,
     },
     {
       text: "Wooden-finish bedrooms with premium fittings and designer lighting",
       image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=800&fit=crop",
+      Icon: Sparkles,
     },
     {
       text: "Walking distance from Sector 76 Metro Station",
-      image: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800&h=800&fit=crop",
+      image: "https://media.biltrax.com/wp-content/uploads/2022/06/1sEOkcUg-Story-4-Noida-Metro-Aqua-Line-1.gif",
+      Icon: Train,
     },
     {
       text: "Surrounded by malls, schools, hospitals, and office hubs",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=800&fit=crop",
+      image: "https://content.jdmagicbox.com/v2/comp/delhi/q7/011pxx11.xx11.100331161101.b1q7/catalogue/max-super-speciality-hospital-indraprastha-extension-delhi-hospitals-f61czderr0.jpg",
+      Icon: MapPin,
     },
     {
       text: "Attractive pre-launch pricing and easy payment options",
       image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=800&fit=crop",
+      Icon: DollarSign,
     },
   ];
 
   useEffect(() => {
+    if (!isAutoPlay) return;
     const interval = setInterval(() => {
-      setDirection(1);
       setCurrentIndex((prev) => (prev + 1) % highlights.length);
-    }, 4000);
-
+    }, 5000);
     return () => clearInterval(interval);
-  }, [highlights.length]);
+  }, [isAutoPlay, highlights.length]);
 
-  const handleDotClick = (index) => {
-    setDirection(index > currentIndex ? 1 : -1);
-    setCurrentIndex(index);
+  const goToNext = () => {
+    setIsAutoPlay(false);
+    setCurrentIndex((prev) => (prev + 1) % highlights.length);
   };
 
-  const variants = {
-    enter: (direction) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0,
-      scale: 0.9,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction) => ({
-      x: direction < 0 ? 300 : -300,
-      opacity: 0,
-      scale: 0.9,
-    }),
+  const goToPrev = () => {
+    setIsAutoPlay(false);
+    setCurrentIndex((prev) => (prev - 1 + highlights.length) % highlights.length);
+  };
+
+  const getCardStyle = (index) => {
+    const diff = (index - currentIndex + highlights.length) % highlights.length;
+    
+    if (diff === 0) {
+      return {
+        zIndex: 30,
+        scale: 1,
+        rotateY: 0,
+        x: 0,
+        y: 0,
+        opacity: 1,
+      };
+    } else if (diff === 1) {
+      return {
+        zIndex: 20,
+        scale: 0.9,
+        rotateY: -25,
+        x: 200,
+        y: 20,
+        opacity: 0.7,
+      };
+    } else if (diff === highlights.length - 1) {
+      return {
+        zIndex: 20,
+        scale: 0.9,
+        rotateY: 25,
+        x: -200,
+        y: 20,
+        opacity: 0.7,
+      };
+    } else {
+      return {
+        zIndex: 10,
+        scale: 0.8,
+        rotateY: diff > highlights.length / 2 ? 45 : -45,
+        x: diff > highlights.length / 2 ? -300 : 300,
+        y: 40,
+        opacity: 0,
+      };
+    }
   };
 
   return (
-    <section
-      id="highlights"
-      className="relative h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 flex flex-col"
-    >
-      {/* Animated Background Elements
+    <section className="relative min-h-screen relative py-16 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 overflow-hidden flex items-center justify-center py-12 px-4">
+      {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-0 left-0 sm:left-1/4 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-blue-400/20 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
           animate={{
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-0 right-0 sm:right-1/4 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-indigo-400/20 rounded-full blur-3xl"
-          animate={{
-            x: [0, -50, 0],
-            y: [0, 30, 0],
             scale: [1, 1.2, 1],
+            x: [0, 100, 0],
+            y: [0, -50, 0],
           }}
           transition={{
-            duration: 25,
+            duration: 15,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
-      </div> */}
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, -100, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </div>
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <motion.div
-                className="absolute top-20 left-10 w-64 h-64 bg-purple-300/20 rounded-full blur-3xl"
-                animate={{
-                  x: [0, 50, 0],
-                  y: [0, -30, 0],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-              <motion.div
-                className="absolute bottom-20 right-10 w-72 h-72 bg-indigo-300/20 rounded-full blur-3xl"
-                animate={{
-                  x: [0, -50, 0],
-                  y: [0, 50, 0],
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{
-                  duration: 25,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex-1 flex flex-col justify-center py-8 sm:py-12">
+      <div className="relative w-full max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 sm:mb-8 md:mb-10"
+          className="text-center mb-12"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 text-white px-4">
-            Highlights of Centrum Heights
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+            Centrum Heights
           </h2>
-          <div className="h-1 w-16 sm:w-20 md:w-24 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full" />
+          <p className="text-xl text-blue-200">Discover Premium Living</p>
         </motion.div>
 
-        {/* Carousel Container */}
-        <div className="relative flex-1 flex items-center justify-center px-2 sm:px-4 max-h-[500px] sm:max-h-[550px] md:max-h-[600px]">
-          <AnimatePresence initial={false} custom={direction} mode="wait">
-            <motion.div
-              key={currentIndex}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.4 },
-                scale: { duration: 0.4 },
-              }}
-              className="absolute inset-0 flex items-center justify-center"
-            >
-              {/* Glassmorphism Card */}
-              <div className="relative w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl aspect-square max-h-full">
-                {/* Background Image */}
-                <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden">
-                  <img
-                    src={highlights[currentIndex].image}
-                    alt={`Highlight ${currentIndex + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Dark overlay with blue tint */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-blue-100/50 to-indigo-100/50" />
-                </div>
+        {/* 3D Card Stack */}
+        <div className="relative h-[400px] md:h-[600px] flex items-center justify-center perspective-1000">
+          <div className="relative w-full max-w-xl h-full" style={{ perspective: "2000px" }}>
+            {highlights.map((highlight, index) => {
+              const style = getCardStyle(index);
+              const isActive = index === currentIndex;
 
-                {/* Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-indigo-500/30 rounded-2xl sm:rounded-3xl blur-2xl -z-10" />
-                
-                {/* Glassmorphism Overlay */}
-                <div className="relative h-full backdrop-blur-md  border-2 border-blue-300/50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-2xl flex flex-col justify-center">
-                  
-                  {/* Icon */}
-                  <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2, type: "spring" }}
-                    className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-2xl mb-4 sm:mb-6"
+              return (
+                <motion.div
+                  key={index}
+                  className="absolute inset-0 mx-auto w-11/12 md:w-full"
+                  animate={style}
+                  transition={{
+                    duration: 0.7,
+                    ease: "easeInOut",
+                  }}
+                  style={{
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  <div
+                    className={`relative w-full h-full rounded-3xl overflow-hidden shadow-2xl ${
+                      isActive ? "cursor-grab active:cursor-grabbing" : "cursor-pointer"
+                    }`}
+                    onClick={() => !isActive && setCurrentIndex(index)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-10 lg:w-10 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </motion.div>
+                    {/* Background Image */}
+                    <img
+                      src={highlight.image}
+                      alt={`Highlight ${index + 1}`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-                  {/* Text Content */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="flex-1 flex items-center"
-                  >
-                    <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-gray-900 font-bold leading-tight drop-shadow-lg">
-                      {highlights[currentIndex].text}
-                    </p>
-                  </motion.div>
+                    {/* Content */}
+                    <div className="relative h-full flex flex-col justify-end p-8 md:p-12">
+                      {/* Icon */}
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: isActive ? 1 : 0.8 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-6xl md:text-7xl mb-6"
+                      >
+                        {highlight.icon}
+                      </motion.div>
 
-                  {/* Counter Badge */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="absolute top-4 right-4 sm:top-6 sm:right-6 backdrop-blur-xl bg-white/70 border-2 border-blue-300/50 rounded-xl sm:rounded-2xl px-3 py-1.5 sm:px-4 sm:py-2"
-                  >
-                    <span className="text-gray-900 font-bold text-xs sm:text-sm md:text-base drop-shadow">
-                      {currentIndex + 1} / {highlights.length}
-                    </span>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                      {/* Text */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: isActive ? 1 : 0.6, y: 0 }}
+                        className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight"
+                      >
+                        {highlight.text}
+                      </motion.p>
+
+                      {/* Number Badge */}
+                      <div className="absolute top-8 right-8 bg-white/20 backdrop-blur-md rounded-full w-16 h-16 flex items-center justify-center border-2 border-white/40">
+                        <span className="text-2xl font-bold text-white">
+                          {index + 1}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Navigation Dots */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 px-4">
-          {highlights.map((highlight, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleDotClick(idx)}
-              className="group relative touch-manipulation"
-              aria-label={`Go to highlight ${idx + 1}`}
+        {/* Navigation Controls */}
+        <div className="flex items-center justify-center gap-6 mt-12">
+          {/* Previous Button */}
+          <motion.button
+            onClick={goToPrev}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <motion.div
-                className={`h-2.5 sm:h-3 rounded-full transition-all duration-300 ${
-                  currentIndex === idx
-                    ? "bg-blue-600 w-10 sm:w-12"
-                    : "bg-gray-300 hover:bg-gray-400 w-2.5 sm:w-3"
-                }`}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </motion.button>
+
+          {/* Dots Indicator */}
+          <div className="flex gap-2">
+            {highlights.map((_, idx) => (
+              <motion.button
+                key={idx}
+                onClick={() => {
+                  setIsAutoPlay(false);
+                  setCurrentIndex(idx);
+                }}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
+                className={`h-3 rounded-full transition-all duration-300 ${
+                  currentIndex === idx
+                    ? "bg-white w-12"
+                    : "bg-white/40 w-3 hover:bg-white/60"
+                }`}
               />
-              {currentIndex === idx && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-sm"
-                />
-              )}
-            </button>
-          ))}
+            ))}
+          </div>
+
+          {/* Next Button */}
+          <motion.button
+            onClick={goToNext}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </motion.button>
         </div>
 
-        {/* Decorative Elements - Hidden on mobile */}
-        <div className="hidden md:block absolute top-10 left-10 w-16 h-16 lg:w-20 lg:h-20 border-2 border-blue-300/40 rounded-2xl rotate-12" />
-        <div className="hidden md:block absolute bottom-10 right-10 w-12 h-12 lg:w-16 lg:h-16 border-2 border-indigo-300/40 rounded-full" />
+        {/* Auto-play Toggle */}
+        <motion.button
+          onClick={() => setIsAutoPlay(!isAutoPlay)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="mx-auto mt-8 px-6 py-3 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 text-white font-semibold flex items-center gap-2 hover:bg-white/30 transition-colors"
+        >
+          {isAutoPlay ? (
+            <>
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+              </svg>
+              Pause
+            </>
+          ) : (
+            <>
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              Play
+            </>
+          )}
+        </motion.button>
       </div>
     </section>
   );

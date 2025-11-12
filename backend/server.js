@@ -5,6 +5,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import leadRoutes from "./routes/leadRoutes.js";
 import testRoutes from "./routes/testRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -15,7 +16,7 @@ app.use(cors({
     origin: [
     "https://centrumheights.com",
     "https://www.centrumheights.com",
-    "https://centrum-heights.onrender.com" 
+    "https://centrum-heights.onrender.com",
   ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -28,6 +29,7 @@ connectDB();
 
 app.use("/api/leads", leadRoutes);
 app.use("/api/test", testRoutes); 
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Centrum Heights Lead API is running...");

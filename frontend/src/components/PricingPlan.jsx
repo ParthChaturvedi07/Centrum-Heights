@@ -2,8 +2,24 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check, Sparkles, TrendingUp } from "lucide-react";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function PricingPlan() {
+  const { isAuthenticated } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleDownload = () => {
+    if (!isAuthenticated) {
+      // redirect to login, preserve return location so user can be sent back
+      navigate("/login", { state: { from: location } });
+      return;
+    }
+    // user is authenticated — serve brochure (place brochure.pdf in public/)
+    window.open(broucher, "_blank");
+  };
+
   const units = [
     {
       type: "2 BHK",
@@ -269,8 +285,8 @@ export default function PricingPlan() {
           >
             Enquire Now
           </motion.a>
-          <motion.a
-            href={broucher}
+          <motion.button
+            onClick={handleDownload}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
@@ -278,7 +294,7 @@ export default function PricingPlan() {
             className="backdrop-blur-xl bg-white/70 border-2 border-purple-300 text-purple-700 hover:bg-white/90 px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 w-full sm:w-auto text-center"
           >
             Get Brochure &amp; Price Details
-          </motion.a>
+          </motion.button>
         </motion.div>
       </div>
     </section>
