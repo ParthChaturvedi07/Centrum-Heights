@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,10 +7,13 @@ import Bg_Video from "../assets/videos/centrum location drone.mp4";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
+import DownloadBrochureModal from "./DownloadBroucherModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const subheadingRef = useRef(null);
@@ -214,7 +217,7 @@ export default function HeroSection() {
               </motion.a>
 
               <motion.button
-                onClick={handleDownload}
+                onClick={() => setIsModalOpen(true)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full font-semibold text-sm sm:text-base shadow-lg"
@@ -226,6 +229,10 @@ export default function HeroSection() {
               >
                 <span>Download Brochure</span>
               </motion.button>
+              <DownloadBrochureModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+              />
             </div>
           </div>
 

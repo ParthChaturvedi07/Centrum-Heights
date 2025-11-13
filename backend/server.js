@@ -12,15 +12,17 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({
+app.use(
+  cors({
     origin: [
-    "https://centrumheights.com",
-    "https://www.centrumheights.com",
-    "https://centrum-heights.onrender.com",
-  ],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+      "https://centrumheights.com",
+      "https://www.centrumheights.com",
+      "https://centrum-heights.onrender.com",
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Body parser MUST come after CORS
 app.use(express.json());
@@ -28,7 +30,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/api/leads", leadRoutes);
-app.use("/api/test", testRoutes); 
+app.use("/api/test", testRoutes);
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {

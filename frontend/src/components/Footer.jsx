@@ -14,7 +14,7 @@ export default function Footer() {
               Sector 76, Central Noida <br />
               Contact:{" "}
               <a href="tel:+919999999999" className="text-blue-400">
-                +91 91403 18165
+                +91 8587897666
               </a>
               <br />
               Email:{" "}
@@ -43,7 +43,6 @@ export default function Footer() {
 
           {/* RERA */}
           <div>
-            <h3 className="font-semibold text-lg mb-2">RERA Information</h3>
             <p className="text-sm">
               This website is for informational purposes only and does not
               constitute an offer to sell.

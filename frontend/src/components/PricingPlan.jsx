@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Sparkles, TrendingUp } from "lucide-react";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
+import DownloadBrochureModal from "./DownloadBroucherModal";
 
 export default function PricingPlan() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
 
   const navigate = useNavigate();
@@ -25,8 +27,8 @@ export default function PricingPlan() {
     {
       type: "2 BHK",
       size: "977 sq.ft.",
-      price: "₹60.08 L",
-      offer: "₹6150/sq.ft",
+      price: "₹62L",
+      offer: "₹6350/sq.ft",
       plan: "10-30-60 Plan",
       features: [
         "Premium Low-Rise",
@@ -39,8 +41,8 @@ export default function PricingPlan() {
     {
       type: "2 BHK",
       size: "1077 sq.ft.",
-      price: "₹66.23 L",
-      offer: "₹6150/sq.ft",
+      price: "₹68L",
+      offer: "₹6350/sq.ft",
       plan: "10-30-60 Plan",
       features: [
         "Premium Low-Rise",
@@ -287,7 +289,7 @@ export default function PricingPlan() {
             Enquire Now
           </motion.a>
           <motion.button
-            onClick={handleDownload}
+            onClick={() => setIsModalOpen(true)}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
@@ -296,6 +298,10 @@ export default function PricingPlan() {
           >
             Get Brochure &amp; Price Details
           </motion.button>
+          <DownloadBrochureModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
         </motion.div>
       </div>
     </section>

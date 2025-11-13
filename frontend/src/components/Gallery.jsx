@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,10 +12,12 @@ import gallery6 from "../assets/images/WhatsApp Image 2025-11-08 at 13.50.44_7cd
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
 import { useAuth } from "../utils/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import DownloadBrochureModal from "./DownloadBroucherModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Gallery() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sectionRef = useRef(null);
   const gridRef = useRef(null);
 
@@ -95,7 +97,7 @@ export default function Gallery() {
     <section
       ref={sectionRef}
       id="gallery"
-      className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900"
+      className="min-h-screen relative py-16 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900"
     >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -246,6 +248,12 @@ export default function Gallery() {
           </div>
         </motion.div>
 
+        <DownloadBrochureModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          className="mb-60"
+        />
+
         {/* CTA Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -273,7 +281,7 @@ export default function Gallery() {
                 Schedule a Visit
               </motion.a>
               <motion.button
-                onClick={handleDownload}
+                onClick={() => setIsModalOpen(true)}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}

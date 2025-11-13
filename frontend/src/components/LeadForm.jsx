@@ -16,9 +16,12 @@ import api from "../utils/api";
 import broucher from "../assets/doc/Centrum Heights Brochure.pdf";
 import { useAuth } from "../utils/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import DownloadBrochureModal from "./DownloadBroucherModal";
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function LeadForm() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sectionRef = useRef(null);
   const formRef = useRef(null);
 
@@ -210,7 +213,7 @@ export default function LeadForm() {
 
             {/* Download Brochure Card */}
             <motion.button
-              onClick={handleDownload}
+              onClick={() => setIsModalOpen(true)}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
@@ -231,6 +234,11 @@ export default function LeadForm() {
                 </div>
               </div>
             </motion.button>
+
+            <DownloadBrochureModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
           </motion.div>
 
           {/* Right - Form */}
