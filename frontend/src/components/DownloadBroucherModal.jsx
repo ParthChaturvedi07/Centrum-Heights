@@ -9,8 +9,6 @@ import {
   X,
   CheckCircle2,
 } from "lucide-react";
-import api from "../utils/api";
-import brochure from "../assets/doc/Centrum Heights Brochure.pdf";
 
 export default function DownloadBrochureModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
@@ -20,7 +18,6 @@ export default function DownloadBrochureModal({ isOpen, onClose }) {
     message: "",
   });
 
-  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
@@ -34,39 +31,43 @@ export default function DownloadBrochureModal({ isOpen, onClose }) {
       return;
     }
 
-    setLoading(true);
+    // Immediately trigger download and show success
+    downloadBrochure();
+    setSubmitted(true);
+
+    // Submit to backend silently in background (non-blocking)
+    submitLeadInBackground();
+
+    // Reset and close after 2 seconds
+    setTimeout(() => {
+      setFormData({ name: "", phone: "", email: "", message: "" });
+      setSubmitted(false);
+      onClose();
+    }, 2000);
+  };
+
+  const submitLeadInBackground = async () => {
     try {
-      // Submit lead data to backend
+      // Import api lazily to avoid blocking
+      const api = (await import("../utils/api")).default;
       const res = await api.post("/api/leads", formData);
       console.log("Lead submitted:", res.data);
-
-      // Trigger brochure download
-      downloadBrochure();
-
-      // Show success state
-      setSubmitted(true);
-
-      // Reset and close after 2 seconds
-      setTimeout(() => {
-        setFormData({ name: "", phone: "", email: "", message: "" });
-        setSubmitted(false);
-        onClose();
-      }, 2000);
     } catch (err) {
-      console.error("Submission error:", err);
-      alert(err?.response?.data?.message || "Submission failed. Try again.");
-    } finally {
-      setLoading(false);
+      console.error("Background submission error:", err);
+      // Fail silently - user already has brochure
     }
   };
 
   const downloadBrochure = () => {
-    const link = document.createElement("a");
-    link.href = brochure;
-    link.download = "Centrum Heights Brochure.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Import brochure lazily
+    import("../assets/doc/Centrum Heights Brochure.pdf").then((module) => {
+      const link = document.createElement("a");
+      link.href = module.default;
+      link.download = "Centrum Heights Brochure.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
   };
 
   return (
@@ -175,33 +176,15 @@ export default function DownloadBrochureModal({ isOpen, onClose }) {
                       />
                     </div>
 
-                    {/* Download Button */}
+                    {/* Download Button - No loading state */}
                     <motion.button
                       type="submit"
-                      disabled={loading}
-                      whileHover={{ scale: loading ? 1 : 1.02 }}
-                      whileTap={{ scale: loading ? 1 : 0.98 }}
-                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3.5 rounded-xl font-semibold shadow-lg hover:shadow-blue-500/50 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3.5 rounded-xl font-semibold shadow-lg hover:shadow-blue-500/50 transition-all duration-300 flex items-center justify-center gap-2 mt-6"
                     >
-                      {loading ? (
-                        <>
-                          <motion.div
-                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                            animate={{ rotate: 360 }}
-                            transition={{
-                              duration: 1,
-                              repeat: Infinity,
-                              ease: "linear",
-                            }}
-                          />
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          <Download className="w-5 h-5" />
-                          Download Brochure
-                        </>
-                      )}
+                      <Download className="w-5 h-5" />
+                      Download Brochure
                     </motion.button>
 
                     <p className="text-xs text-center text-gray-400 mt-4">
