@@ -79,31 +79,32 @@ export default function LeadForm() {
       return;
     }
 
-    setLoading(true);
+    // Immediately show success toast
+    setShowToast(true);
+
+    // Store form data before clearing
+    const submittedData = { ...formData };
+
+    // Reset form immediately
+    setFormData({ name: "", phone: "", email: "", message: "" });
+
+    // Submit in background
+    submitLeadInBackground(submittedData);
+
+    // Hide toast after 5 seconds
+    setTimeout(() => setShowToast(false), 5000);
+  };
+
+  const submitLeadInBackground = async (data) => {
     try {
-      // Real API call to backend. `api` has baseURL set to /api (see src/utils/api.js)
-      const res = await api.post("/api/leads", formData);
+      const res = await api.post("/api/leads", data);
       console.log("Lead submitted, response:", res.data);
-
-      // Show success toast
-      setShowToast(true);
-
-      // Reset form
-      setFormData({ name: "", phone: "", email: "", message: "" });
-
-      // Hide toast after 5 seconds
-      setTimeout(() => setShowToast(false), 5000);
     } catch (err) {
       console.error(
-        "Lead submission error:",
+        "Background submission error:",
         err?.response || err.message || err
       );
-      const msg =
-        err?.response?.data?.message ||
-        "Submission failed. Please try again later.";
-      alert(msg);
-    } finally {
-      setLoading(false);
+      // Fail silently - user already sees success message
     }
   };
 
@@ -308,30 +309,12 @@ export default function LeadForm() {
                 {/* Submit Button */}
                 <motion.button
                   onClick={handleSubmit}
-                  disabled={loading}
-                  whileHover={{ scale: loading ? 1 : 1.02 }}
-                  whileTap={{ scale: loading ? 1 : 0.98 }}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-blue-500/50 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-blue-500/50 transition-all duration-300 flex items-center justify-center gap-2"
                 >
-                  {loading ? (
-                    <>
-                      <motion.div
-                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                        animate={{ rotate: 360 }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                      />
-                      Submitting...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5" />
-                      Enquire Now
-                    </>
-                  )}
+                  <Send className="w-5 h-5" />
+                  Enquire Now
                 </motion.button>
 
                 {/* Privacy Note */}
