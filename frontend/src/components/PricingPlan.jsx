@@ -54,32 +54,38 @@ export default function PricingPlan() {
     },
   ];
 
-  useEffect(() => {
-    const ld = {
-      "@context": "https://schema.org",
-      "@type": "OfferCatalog",
-      name: "Centrum Heights Pricing",
-      itemListElement: units.map((u) => ({
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Product",
-          name: `${u.type} (${u.size})`,
-        },
-        price: u.price.replace(/[^\d]/g, ""),
-        priceCurrency: "INR",
+ useEffect(() => {
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    name: "Centrum Heights Pricing",
+    itemListElement: units.map((u, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Product",
+        name: `${u.type} (${u.size})`,
         description: `${u.type} low-rise apartment, ${u.offer}, ${u.plan}`,
-      })),
-    };
+        offers: {
+          "@type": "Offer",
+          price: u.price.replace(/[^\d]/g, ""),
+          priceCurrency: "INR",
+          availability: "https://schema.org/InStock"
+        }
+      }
+    }))
+  };
 
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(ld);
-    document.head.appendChild(script);
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.text = JSON.stringify(ld);
+  document.head.appendChild(script);
 
-    return () => {
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-  }, []);
+  return () => {
+    if (script.parentNode) script.parentNode.removeChild(script);
+  };
+}, []);
+
 
   return (
     <section
