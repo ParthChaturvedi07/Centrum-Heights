@@ -10,8 +10,6 @@ import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 const app = express();
 
-app.use(express.json());
-
 app.use(
   cors({
     origin: [
@@ -24,7 +22,6 @@ app.use(
   })
 );
 
-// Body parser MUST come after CORS
 app.use(express.json());
 
 connectDB();

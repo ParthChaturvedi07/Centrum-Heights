@@ -54,32 +54,10 @@ export default function PricingPlan() {
     },
   ];
 
-  useEffect(() => {
-    const ld = {
-      "@context": "https://schema.org",
-      "@type": "OfferCatalog",
-      name: "Centrum Heights Pricing",
-      itemListElement: units.map((u) => ({
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Product",
-          name: `${u.type} (${u.size})`,
-        },
-        price: u.price.replace(/[^\d]/g, ""),
-        priceCurrency: "INR",
-        description: `${u.type} low-rise apartment, ${u.offer}, ${u.plan}`,
-      })),
-    };
+ useEffect(() => {
+  
+}, []);
 
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(ld);
-    document.head.appendChild(script);
-
-    return () => {
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-  }, []);
 
   return (
     <section
