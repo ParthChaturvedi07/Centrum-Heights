@@ -180,7 +180,7 @@ export default function AboutDeveloper() {
               <div className="relative rounded-xl sm:rounded-2xl overflow-hidden h-48 sm:h-56 md:h-64 bg-gradient-to-br from-gray-200 to-gray-300">
                 <img
                   src={CENTRUM_ESTATES}
-                  alt="OM Infra Projects"
+                  alt="Centrum Estates Projects"
                   className="w-full h-full object-contain opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-transparent to-transparent" />
@@ -203,7 +203,7 @@ export default function AboutDeveloper() {
           className="mb-8"
         >
           <h3 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-8 sm:mb-12">
-            Why Choose OM Infra
+            Why Choose Centrum Estates
           </h3>
         </motion.div>
 
