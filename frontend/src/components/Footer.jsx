@@ -24,23 +24,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Legal */}
-          <div>
-            <h3 className="font-semibold text-lg mb-2">Legal</h3>
-            <ul className="space-y-1 text-sm">
-              <li>
-                <a href="/privacy-policy" className="hover:text-blue-400">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="/disclaimer" className="hover:text-blue-400">
-                  Disclaimer
-                </a>
-              </li>
-            </ul>
-          </div>
-
           {/* RERA */}
           <div>
             <p className="text-sm">

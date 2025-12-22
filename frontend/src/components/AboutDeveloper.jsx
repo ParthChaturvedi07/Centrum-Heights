@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Building2, Award, Users, TrendingUp } from "lucide-react";
-import OM_INFRA from "../assets/images/ominfra.webp"
+import CENTRUM_ESTATES from "../assets/images/CELogo.png"
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -108,7 +108,7 @@ export default function AboutDeveloper() {
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            About OM Infra
+            About Centrum Estates
           </h2>
           <div className="h-1 w-20 sm:w-24 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full mb-8" />
         </motion.div>
@@ -123,14 +123,14 @@ export default function AboutDeveloper() {
           >
             <div className="backdrop-blur-xl bg-white/70 border-2 border-gray-200/50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl">
               <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-                OM Infra is known for delivering residential spaces that combine
+                Centrum Estates is known for delivering residential spaces that combine
                 functionality, aesthetics, and long-term value. Centrum Heights continues
                 this tradition by offering modern low-rise living at the most strategic
                 location in Noida.
               </p>
               
               <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
-                With a commitment to quality construction and customer satisfaction, OM Infra 
+                With a commitment to quality construction and customer satisfaction, Centrum Estates 
                 has established itself as a trusted name in the real estate sector, creating 
                 homes that stand the test of time.
               </p>
@@ -166,10 +166,10 @@ export default function AboutDeveloper() {
                 <div className="backdrop-blur-md bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200/50 rounded-2xl p-6 sm:p-8 md:p-12 shadow-lg">
                   <div className="text-center">
                     <div className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
-                      OM
+                      Centrum
                     </div>
                     <div className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-700">
-                      INFRA
+                      ESTATES
                     </div>
                     <div className="h-1 w-16 sm:w-20 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full mt-3" />
                   </div>
@@ -179,7 +179,7 @@ export default function AboutDeveloper() {
               {/* Decorative Building Image Placeholder */}
               <div className="relative rounded-xl sm:rounded-2xl overflow-hidden h-48 sm:h-56 md:h-64 bg-gradient-to-br from-gray-200 to-gray-300">
                 <img
-                  src={OM_INFRA}
+                  src={CENTRUM_ESTATES}
                   alt="OM Infra Projects"
                   className="w-full h-full object-contain opacity-90"
                 />
