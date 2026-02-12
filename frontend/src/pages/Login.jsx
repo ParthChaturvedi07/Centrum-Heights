@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../utils/AuthProvider";
+import HeadMeta from "../utils/HeadMeta";
 
 export default function Login() {
   const { login } = useAuth();
@@ -54,6 +55,13 @@ export default function Login() {
   };
 
   return (
+    <>
+      <HeadMeta
+        title="Login | Centrum Heights"
+        description="Login to manage Centrum Heights enquiries and property interactions."
+        canonicalPath="/login"
+        robots="noindex, nofollow"
+      />
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 px-4 sm:px-6 lg:px-8">
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
@@ -230,5 +238,6 @@ export default function Login() {
         </div>
       </div>
     </div>
+    </>
   );
 }

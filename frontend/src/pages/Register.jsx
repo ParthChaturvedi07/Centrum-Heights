@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
 import { useAuth } from "../utils/AuthProvider";
+import HeadMeta from "../utils/HeadMeta";
 
 export default function Register() {
   const { register } = useAuth();
@@ -29,6 +30,13 @@ export default function Register() {
   };
 
   return (
+    <>
+      <HeadMeta
+        title="Register | Centrum Heights"
+        description="Create your Centrum Heights account to manage property enquiries."
+        canonicalPath="/register"
+        robots="noindex, nofollow"
+      />
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 px-4 sm:px-6 lg:px-8">
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
@@ -153,5 +161,6 @@ export default function Register() {
         </motion.div>
       </div>
     </div>
+    </>
   );
 }

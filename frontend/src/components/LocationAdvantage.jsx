@@ -11,7 +11,6 @@ import {
   Hospital,
   GraduationCap,
 } from "lucide-react";
-import HeadMeta from "../utils/HeadMeta";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -138,7 +137,6 @@ export default function LocationAdvantage() {
       ref={sectionRef}
       className="relative py-24 overflow-hidden"
     >
-      <HeadMeta description="Centrally located in Sector 76, Noida — Centrum Heights enjoys proximity to metro, malls, schools, hospitals, and business hubs." />
 
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50">

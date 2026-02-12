@@ -1,48 +1,109 @@
-import React, { useEffect } from 'react';
+import { useEffect } from "react";
+import { buildCanonicalUrl, DEFAULT_OG_IMAGE } from "./seo";
 
-export default function HeadMeta({ title, description, ogTitle, ogDescription, jsonLd }) {
+export default function HeadMeta({
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  canonicalPath = "/",
+  robots,
+  jsonLd,
+}) {
   useEffect(() => {
-    if (title) document.title = title;
-
-    const ensureMeta = (selector, attrs) => {
+    const ensureTag = (selector, createTag, attrs) => {
       let el = document.head.querySelector(selector);
       if (!el) {
-        el = document.createElement('meta');
-        Object.keys(attrs).forEach((k) => el.setAttribute(k, attrs[k]));
+        el = document.createElement(createTag);
         document.head.appendChild(el);
-      } else {
-        Object.keys(attrs).forEach((k) => el.setAttribute(k, attrs[k]));
       }
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
       return el;
     };
 
+    if (title) {
+      document.title = title;
+      ensureTag('meta[property="og:title"]', "meta", {
+        property: "og:title",
+        content: ogTitle || title,
+      });
+      ensureTag('meta[name="twitter:title"]', "meta", {
+        name: "twitter:title",
+        content: ogTitle || title,
+      });
+    }
+
     if (description) {
-      ensureMeta('meta[name="description"]', { name: 'description', content: description });
+      ensureTag('meta[name="description"]', "meta", {
+        name: "description",
+        content: description,
+      });
+      ensureTag('meta[property="og:description"]', "meta", {
+        property: "og:description",
+        content: ogDescription || description,
+      });
+      ensureTag('meta[name="twitter:description"]', "meta", {
+        name: "twitter:description",
+        content: ogDescription || description,
+      });
     }
 
-    if (ogTitle) {
-      ensureMeta('meta[property="og:title"]', { property: 'og:title', content: ogTitle });
+    const canonicalUrl = buildCanonicalUrl(canonicalPath);
+    ensureTag('link[rel="canonical"]', "link", {
+      rel: "canonical",
+      href: canonicalUrl,
+    });
+    ensureTag('meta[property="og:url"]', "meta", {
+      property: "og:url",
+      content: canonicalUrl,
+    });
+    ensureTag('meta[name="twitter:url"]', "meta", {
+      name: "twitter:url",
+      content: canonicalUrl,
+    });
+
+    ensureTag('meta[property="og:image"]', "meta", {
+      property: "og:image",
+      content: ogImage || DEFAULT_OG_IMAGE,
+    });
+    ensureTag('meta[name="twitter:image"]', "meta", {
+      name: "twitter:image",
+      content: ogImage || DEFAULT_OG_IMAGE,
+    });
+
+    if (robots) {
+      ensureTag('meta[name="robots"]', "meta", {
+        name: "robots",
+        content: robots,
+      });
     }
 
-    if (ogDescription) {
-      ensureMeta('meta[property="og:description"]', { property: 'og:description', content: ogDescription });
-    }
-
-    // JSON-LD injection (if provided)
-    let jsonLdScript = null;
+    const jsonLdScripts = [];
     if (jsonLd) {
-      jsonLdScript = document.createElement('script');
-      jsonLdScript.type = 'application/ld+json';
-      jsonLdScript.text = typeof jsonLd === 'string' ? jsonLd : JSON.stringify(jsonLd);
-      document.head.appendChild(jsonLdScript);
+      const entries = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
+      entries.forEach((entry) => {
+        const script = document.createElement("script");
+        script.type = "application/ld+json";
+        script.text = typeof entry === "string" ? entry : JSON.stringify(entry);
+        document.head.appendChild(script);
+        jsonLdScripts.push(script);
+      });
     }
 
     return () => {
-      // Note: we don't remove basic meta tags (they may be shared across pages),
-      // but we will remove any JSON-LD script we added.
-      if (jsonLdScript && jsonLdScript.parentNode) jsonLdScript.parentNode.removeChild(jsonLdScript);
+      jsonLdScripts.forEach((script) => script.remove());
     };
-  }, [title, description, ogTitle, ogDescription, jsonLd]);
+  }, [
+    title,
+    description,
+    ogTitle,
+    ogDescription,
+    ogImage,
+    canonicalPath,
+    robots,
+    jsonLd,
+  ]);
 
   return null;
 }
