@@ -15,6 +15,8 @@ export default function ThankYou() {
         description="Thank you for showing interest in Centrum Heights, Sector 76, Noida. Our property consultant will contact you shortly with detailed pricing, floor plans, and availability."
         ogTitle="Thank You – Centrum Heights"
         ogDescription="Our sales team will reach out within a few hours. Chat on WhatsApp or return to home."
+        canonicalPath="/thank-you"
+        robots="noindex, nofollow"
       />
 
       <div className="max-w-md bg-white rounded-2xl shadow-xl p-10">

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://centrum-heights.onrender.com/sitemap.xml
